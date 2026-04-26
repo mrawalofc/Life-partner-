@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Letter 💌</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;600;700&family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a0a2e 0%, #4a1942 25%, #893168 50%, #c44569 75%, #f8b500 100%);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            overflow-x: hidden;
+            font-family: 'Hind Siliguri', 'Poppins', sans-serif;
+            position: relative; color: white;
+        }
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .hearts-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: 1; }
+        .heart { position: absolute; color: rgba(255,255,255,0.25); font-size: 20px; animation: floatUp linear infinite; bottom: -50px; }
+        @keyframes floatUp { 0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.8; } 100% { transform: translateY(-100vh) rotate(360deg) scale(0.5); opacity: 0; } }
+        .sparkle { position: absolute; width: 4px; height: 4px; background: white; border-radius: 50%; animation: sparkle 3s ease-in-out infinite; }
+        @keyframes sparkle { 0%, 100% { opacity: 0; transform: scale(0); } 50% { opacity: 1; transform: scale(1); } }
+        .navbar { position: fixed; top: 0; left: 0; width: 100%; z-index: 200; background: rgba(0,0,0,0.25); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 0 20px; }
+        .nav-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+        .nav-logo { font-family: 'Great Vibes', cursive; font-size: 1.8rem; color: #fff; text-shadow: 0 0 15px rgba(255,105,180,0.8); text-decoration: none; }
+        .nav-links { display: flex; gap: 6px; flex-wrap: wrap; }
+        .nav-link { padding: 7px 14px; border: none; background: transparent; color: rgba(255,255,255,0.7); font-family: 'Poppins', sans-serif; font-size: 0.82rem; cursor: pointer; border-radius: 20px; transition: all 0.3s ease; text-decoration: none; }
+        .nav-link:hover { background: rgba(255,255,255,0.15); color: white; }
+        .nav-link.active { background: rgba(255,105,180,0.4); color: white; font-weight: 600; }
+        .lang-toggle { position: fixed; top: 75px; right: 20px; z-index: 100; background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border-radius: 30px; padding: 5px; display: flex; gap: 5px; border: 1px solid rgba(255,255,255,0.2); }
+        .lang-btn { padding: 6px 16px; border: none; background: transparent; color: white; font-family: 'Poppins', sans-serif; font-size: 13px; cursor: pointer; border-radius: 25px; transition: all 0.3s ease; }
+        .lang-btn.active { background: rgba(255,255,255,0.3); font-weight: 600; }
+        .lang-btn:hover { background: rgba(255,255,255,0.2); }
+        .page-header { text-align: center; padding: 100px 20px 20px; position: relative; z-index: 10; }
+        .page-header h2 { font-family: 'Great Vibes', cursive; font-size: 3rem; text-shadow: 0 0 20px rgba(255,105,180,0.6); margin-bottom: 10px; }
+        .page-header p { color: rgba(255,255,255,0.7); font-size: 1rem; }
+        .letter-container { max-width: 700px; margin: 0 auto; padding: 20px 20px 60px; position: relative; z-index: 10; }
+        .letter-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.05) 100%);
+            backdrop-filter: blur(20px); border-radius: 25px; padding: 50px 40px;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+            position: relative; overflow: hidden;
+        }
+        .letter-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px;
+            background: linear-gradient(90deg, #ff6b9d, #c44569, #f8b500, #e056fd, #ff6b9d);
+            background-size: 300% 100%; animation: rainbow 3s linear infinite;
+        }
+        @keyframes rainbow { 0% { background-position: 0% 50%; } 100% { background-position: 300% 50%; } }
+        .letter-seal { font-size: 4rem; text-align: center; margin-bottom: 20px; animation: sealPulse 2s ease-in-out infinite; }
+        @keyframes sealPulse { 0%, 100% { transform: scale(1) rotate(0deg); } 50% { transform: scale(1.1) rotate(5deg); } }
+        .letter-to { font-family: 'Great Vibes', cursive; font-size: 2rem; color: #ffb3d1; margin-bottom: 10px; }
+        .letter-body { font-size: 1.15rem; line-height: 2.2; color: rgba(255,255,255,0.92); text-align: justify; }
+        .letter-body p { margin-bottom: 18px; }
+        .letter-signature { font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: #ff6b9d; text-align: right; margin-top: 30px; text-shadow: 0 0 15px rgba(255,107,157,0.5); }
+        .letter-date { text-align: right; color: rgba(255,255,255,0.5); font-size: 0.9rem; margin-top: 10px; }
+        .wax-seal { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #c44569, #ff6b9d); margin: 30px auto 0; display: flex; align-items: center; justify-content: center; font-size: 2rem; box-shadow: 0 0 30px rgba(196,69,105,0.5); animation: waxPulse 3s ease-in-out infinite; border: 3px solid rgba(255,255,255,0.2); }
+        @keyframes waxPulse { 0%, 100% { transform: scale(1); box-shadow: 0 0 30px rgba(196,69,105,0.5); } 50% { transform: scale(1.05); box-shadow: 0 0 50px rgba(196,69,105,0.8); } }
+        .floating-emoji { position: fixed; font-size: 24px; pointer-events: none; z-index: 5; animation: floatEmoji 10s ease-in-out infinite; }
+        @keyframes floatEmoji { 0%, 100% { transform: translate(0,0) rotate(0deg); } 25% { transform: translate(20px,-30px) rotate(10deg); } 50% { transform: translate(-10px,-50px) rotate(-5deg); } 75% { transform: translate(15px,-20px) rotate(5deg); } }
+        .hidden { display: none !important; }
+        @media (max-width: 768px) { .nav-link { padding: 5px 10px; font-size: 0.7rem; } .page-header h2 { font-size: 2.2rem; } .letter-card { padding: 30px 20px; } .letter-body { font-size: 1rem; line-height: 1.9; } .letter-signature { font-size: 1.8rem; } }
+    </style>
+</head>
+<body>
+    <div class="hearts-container" id="heartsContainer"></div>
+    <nav class="navbar">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">💕 Love World</a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">🏠 Home</a>
+                <a href="messages.html" class="nav-link" target="_blank">💌 Messages</a>
+                <a href="gallery.html" class="nav-link" target="_blank">🖼️ Gallery</a>
+                <a href="letter.html" class="nav-link active">💌 Letter</a>
+                <a href="countdown.html" class="nav-link" target="_blank">⏳ Countdown</a>
+                <a href="quiz.html" class="nav-link" target="_blank">❓ Quiz</a>
+            </div>
+        </div>
+    </nav>
+    <div class="lang-toggle">
+        <button class="lang-btn active" onclick="setLang('bn')">বাংলা</button>
+        <button class="lang-btn" onclick="setLang('en')">English</button>
+    </div>
+    <div class="floating-emoji" style="top: 15%; left: 10%;">🌹</div>
+    <div class="floating-emoji" style="top: 25%; right: 15%; animation-delay: 2s;">💕</div>
+    <div class="floating-emoji" style="bottom: 20%; left: 20%; animation-delay: 4s;">💖</div>
+    <div class="floating-emoji" style="bottom: 30%; right: 10%; animation-delay: 6s;">🌸</div>
+    <div class="floating-emoji" style="top: 60%; left: 5%; animation-delay: 3s;">✨</div>
+    <div class="floating-emoji" style="top: 40%; right: 5%; animation-delay: 5s;">💫</div>
+
+    <div class="page-header">
+        <h2>My Love Letter</h2>
+        <p>Words straight from my heart 💌</p>
+    </div>
+    <div class="letter-container">
+        <div class="letter-card">
+            <div class="letter-seal">💌</div>
+
+            <div id="bn-letter">
+                <div class="letter-to">প্রিয়তমা,</div>
+                <div class="letter-body">
+                    <p>আমি জানি এই চিঠি লেখার মাধ্যমে আমার সব অনুভূতি প্রকাশ করা সম্ভব নয়। তবুও চেষ্টা করছি, কারণ তোমাকে ছাড়া আমার কথাগুলো অসম্পূর্ণ থেকে যায়।</p>
+                    <p>প্রথম দিন থেকেই তুমি আমার জীবনের সবচেয়ে সুন্দর অংশ। তোমার হাসি আমার দিনের আলো, তোমার কথা আমার প্রিয় সঙ্গীত, আর তোমার ছোঁয়া আমার শান্তি।</p>
+                    <p>যখন তুমি অভিমান করো, আমার পৃথিবী থেমে যায়। তোমার কষ্ট আমার কষ্ট, তোমার আনন্দ আমার আনন্দ। তুমি ছাড়া আমি অসম্পূর্ণ।</p>
+                    <p>আমি প্রতিজ্ঞা করছি — প্রতিটা দিন তোমাকে আরও বেশি ভালোবাসবো। তোমার সব অভিমান মুছে দেবো, তোমার সব স্বপ্ন পূরণ করবো। তুমি আমার একমাত্র।</p>
+                    <p>চিরকাল তোমার,</p>
+                </div>
+                <div class="letter-signature">তোমার প্রেমিক</div>
+                <div class="letter-date">২৭ এপ্রিল, ২০২৬</div>
+            </div>
+
+            <div id="en-letter" class="hidden">
+                <div class="letter-to">My Dearest,</div>
+                <div class="letter-body">
+                    <p>I know it's impossible to express all my feelings through this letter. Yet I am trying, because without you, my words remain incomplete.</p>
+                    <p>From the very first day, you have been the most beautiful part of my life. Your smile is the light of my day, your voice is my favorite music, and your touch is my peace.</p>
+                    <p>When you are upset, my world stops. Your pain is my pain, your joy is my joy. Without you, I am incomplete.</p>
+                    <p>I promise — every day I will love you even more. I will wipe away all your sorrows, and fulfill all your dreams. You are my only one.</p>
+                    <p>Forever yours,</p>
+                </div>
+                <div class="letter-signature">Your Lover</div>
+                <div class="letter-date">April 27, 2026</div>
+            </div>
+
+            <div class="wax-seal">💕</div>
+        </div>
+    </div>
+
+    <script>
+        function createHearts() {
+            const container = document.getElementById('heartsContainer');
+            const heartSymbols = ['❤️','💕','💖','💗','💓','💝','💘','💞'];
+            for (let i = 0; i < 25; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDuration = (Math.random() * 10 + 8) + 's';
+                heart.style.animationDelay = Math.random() * 10 + 's';
+                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                container.appendChild(heart);
+            }
+        }
+        function createSparkles() {
+            const container = document.getElementById('heartsContainer');
+            for (let i = 0; i < 40; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.animationDelay = Math.random() * 3 + 's';
+                sparkle.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                container.appendChild(sparkle);
+            }
+        }
+        function setLang(lang) {
+            const bnLetter = document.getElementById('bn-letter');
+            const enLetter = document.getElementById('en-letter');
+            const buttons = document.querySelectorAll('.lang-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            if (lang === 'bn') {
+                bnLetter.classList.remove('hidden');
+                enLetter.classList.add('hidden');
+                buttons[0].classList.add('active');
+                document.title = 'ভালোবাসার চিঠি 💌';
+            } else {
+                bnLetter.classList.add('hidden');
+                enLetter.classList.remove('hidden');
+                buttons[1].classList.add('active');
+                document.title = 'Love Letter 💌';
+            }
+        }
+        createHearts();
+        createSparkles();
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            document.body.style.backgroundPosition = `${x*50}% ${y*50}%`;
+        });
+    </script>
+</body>
+</html>

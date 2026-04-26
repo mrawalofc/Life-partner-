@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Romantic Messages 💌</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;600;700&family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a0a2e 0%, #4a1942 25%, #893168 50%, #c44569 75%, #f8b500 100%);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            overflow-x: hidden;
+            font-family: 'Hind Siliguri', 'Poppins', sans-serif;
+            position: relative; color: white;
+        }
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .hearts-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: 1; }
+        .heart { position: absolute; color: rgba(255,255,255,0.25); font-size: 20px; animation: floatUp linear infinite; bottom: -50px; }
+        @keyframes floatUp { 0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.8; } 100% { transform: translateY(-100vh) rotate(360deg) scale(0.5); opacity: 0; } }
+        .sparkle { position: absolute; width: 4px; height: 4px; background: white; border-radius: 50%; animation: sparkle 3s ease-in-out infinite; }
+        @keyframes sparkle { 0%, 100% { opacity: 0; transform: scale(0); } 50% { opacity: 1; transform: scale(1); } }
+        .navbar { position: fixed; top: 0; left: 0; width: 100%; z-index: 200; background: rgba(0,0,0,0.25); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 0 20px; }
+        .nav-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+        .nav-logo { font-family: 'Great Vibes', cursive; font-size: 1.8rem; color: #fff; text-shadow: 0 0 15px rgba(255,105,180,0.8); text-decoration: none; }
+        .nav-links { display: flex; gap: 6px; flex-wrap: wrap; }
+        .nav-link { padding: 7px 14px; border: none; background: transparent; color: rgba(255,255,255,0.7); font-family: 'Poppins', sans-serif; font-size: 0.82rem; cursor: pointer; border-radius: 20px; transition: all 0.3s ease; text-decoration: none; }
+        .nav-link:hover { background: rgba(255,255,255,0.15); color: white; }
+        .nav-link.active { background: rgba(255,105,180,0.4); color: white; font-weight: 600; }
+        .lang-toggle { position: fixed; top: 75px; right: 20px; z-index: 100; background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border-radius: 30px; padding: 5px; display: flex; gap: 5px; border: 1px solid rgba(255,255,255,0.2); }
+        .lang-btn { padding: 6px 16px; border: none; background: transparent; color: white; font-family: 'Poppins', sans-serif; font-size: 13px; cursor: pointer; border-radius: 25px; transition: all 0.3s ease; }
+        .lang-btn.active { background: rgba(255,255,255,0.3); font-weight: 600; }
+        .lang-btn:hover { background: rgba(255,255,255,0.2); }
+        .page-header { text-align: center; padding: 100px 20px 20px; position: relative; z-index: 10; }
+        .page-header h2 { font-family: 'Great Vibes', cursive; font-size: 3rem; text-shadow: 0 0 20px rgba(255,105,180,0.6); margin-bottom: 10px; }
+        .page-header p { color: rgba(255,255,255,0.7); font-size: 1rem; }
+        .messages-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; max-width: 1200px; margin: 0 auto; padding: 20px; position: relative; z-index: 10; }
+        .msg-card { background: rgba(255,255,255,0.08); backdrop-filter: blur(15px); border-radius: 20px; padding: 30px; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 15px 35px rgba(0,0,0,0.2); transition: all 0.4s ease; cursor: pointer; position: relative; overflow: hidden; }
+        .msg-card::after { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: left 0.6s ease; }
+        .msg-card:hover::after { left: 100%; }
+        .msg-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 25px 50px rgba(0,0,0,0.3), 0 0 30px rgba(255,105,180,0.2); border-color: rgba(255,105,180,0.4); }
+        .msg-card .msg-emoji { font-size: 2.5rem; margin-bottom: 15px; display: block; }
+        .msg-card .msg-text { font-size: 1.05rem; line-height: 1.8; color: rgba(255,255,255,0.9); font-family: 'Hind Siliguri', sans-serif; }
+        .msg-card .msg-tag { display: inline-block; margin-top: 15px; padding: 5px 14px; background: rgba(255,105,180,0.25); border-radius: 15px; font-size: 0.75rem; color: #ffb3d1; border: 1px solid rgba(255,105,180,0.3); }
+        .floating-emoji { position: fixed; font-size: 24px; pointer-events: none; z-index: 5; animation: floatEmoji 10s ease-in-out infinite; }
+        @keyframes floatEmoji { 0%, 100% { transform: translate(0,0) rotate(0deg); } 25% { transform: translate(20px,-30px) rotate(10deg); } 50% { transform: translate(-10px,-50px) rotate(-5deg); } 75% { transform: translate(15px,-20px) rotate(5deg); } }
+        .popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.4s ease; padding: 20px; }
+        .popup-overlay.active { opacity: 1; visibility: visible; }
+        .popup-box { background: linear-gradient(135deg, #ff6b9d 0%, #c44569 50%, #f8b500 100%); border-radius: 30px; padding: 45px 35px; max-width: 500px; width: 100%; text-align: center; box-shadow: 0 30px 60px rgba(0,0,0,0.4), 0 0 50px rgba(255,107,157,0.4); transform: scale(0.5) translateY(50px); transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); position: relative; border: 2px solid rgba(255,255,255,0.3); }
+        .popup-overlay.active .popup-box { transform: scale(1) translateY(0); }
+        .popup-emoji { font-size: 3.5rem; margin-bottom: 15px; animation: bounce 1s ease infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        .popup-text { font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: white; text-shadow: 0 0 20px rgba(255,255,255,0.5); line-height: 1.4; margin-bottom: 15px; }
+        .popup-detail { font-family: 'Hind Siliguri', 'Poppins', sans-serif; font-size: 1rem; color: rgba(255,255,255,0.95); line-height: 1.8; margin-bottom: 20px; }
+        .popup-hearts { font-size: 1.8rem; margin-bottom: 20px; animation: heartbeat 1s ease-in-out infinite; }
+        @keyframes heartbeat { 0%, 100% { transform: scale(1); } 10% { transform: scale(1.1); } 20% { transform: scale(1); } 30% { transform: scale(1.1); } 40% { transform: scale(1); } }
+        .popup-close { background: rgba(255,255,255,0.25); border: 2px solid rgba(255,255,255,0.5); color: white; padding: 12px 35px; border-radius: 30px; font-family: 'Poppins', sans-serif; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; backdrop-filter: blur(5px); }
+        .popup-close:hover { background: rgba(255,255,255,0.4); transform: scale(1.05); }
+        .popup-close:active { transform: scale(0.95); }
+        .hidden { display: none !important; }
+        @media (max-width: 768px) { .nav-link { padding: 5px 10px; font-size: 0.7rem; } .page-header h2 { font-size: 2.2rem; } .messages-grid { grid-template-columns: 1fr; padding: 15px; } .popup-text { font-size: 1.8rem; } }
+    </style>
+</head>
+<body>
+    <div class="hearts-container" id="heartsContainer"></div>
+    <nav class="navbar">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">💕 Love World</a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">🏠 Home</a>
+                <a href="messages.html" class="nav-link active">💌 Messages</a>
+                <a href="gallery.html" class="nav-link" target="_blank">🖼️ Gallery</a>
+                <a href="letter.html" class="nav-link" target="_blank">💌 Letter</a>
+                <a href="countdown.html" class="nav-link" target="_blank">⏳ Countdown</a>
+                <a href="quiz.html" class="nav-link" target="_blank">❓ Quiz</a>
+            </div>
+        </div>
+    </nav>
+    <div class="lang-toggle">
+        <button class="lang-btn active" onclick="setLang('bn')">বাংলা</button>
+        <button class="lang-btn" onclick="setLang('en')">English</button>
+    </div>
+    <div class="floating-emoji" style="top: 15%; left: 10%;">🌹</div>
+    <div class="floating-emoji" style="top: 25%; right: 15%; animation-delay: 2s;">💕</div>
+    <div class="floating-emoji" style="bottom: 20%; left: 20%; animation-delay: 4s;">💖</div>
+    <div class="floating-emoji" style="bottom: 30%; right: 10%; animation-delay: 6s;">🌸</div>
+    <div class="floating-emoji" style="top: 60%; left: 5%; animation-delay: 3s;">✨</div>
+    <div class="floating-emoji" style="top: 40%; right: 5%; animation-delay: 5s;">💫</div>
+
+    <div class="popup-overlay" id="popup-msg">
+        <div class="popup-box">
+            <div class="popup-emoji" id="popupMsgEmoji">💖</div>
+            <div class="popup-text" id="popupMsgTitle">Love</div>
+            <div class="popup-detail" id="popupMsgText"></div>
+            <div class="popup-hearts">💖💗💖💗💖</div>
+            <button class="popup-close" onclick="closePopup('msg')">Close 💕</button>
+        </div>
+    </div>
+
+    <div class="page-header">
+        <h2>Romantic Messages</h2>
+        <p>Beautiful words for your special someone 💕</p>
+    </div>
+    <div class="messages-grid" id="messagesGrid"></div>
+
+    <script>
+        const messagesData = {
+            bn: [
+                { emoji: "💖", text: "তুমি আমার জীবনের সবচেয়ে সুন্দর উপহার। প্রতিদিন তোমাকে ভালোবাসি আরও বেশি।", tag: "ভালোবাসা", detail: "তুমি আমার জীবনের সবচেয়ে বড় আশীর্বাদ। তোমার হাসি দেখলে আমার সব দুঃখ উড়ে যায়। চিরকাল তোমার পাশে থাকতে চাই। 💕" },
+                { emoji: "🌙", text: "চাঁদের আলোয় যত তারা জ্বলে, তোমার চেয়ে সুন্দর কিছুই নেই এই পৃথিবীতে।", tag: "রোমান্টিক", detail: "প্রতি রাতে চাঁদের দিকে তাকালে তোমার কথা মনে পড়ে। তুমি আমার চাঁদ, তুমি আমার তারা, তুমি আমার সবকিছু। 🌙✨" },
+                { emoji: "☕", text: "সকালের প্রথম চায়ের মতো তুমি — গরম, মিষ্টি, আর আমার দিন শুরুর সেরা অংশ।", tag: "সুপ্রভাত", detail: "প্রতি সকাল তোমার কথা ভেবে শুরু করি। তুমি ছাড়া সকালও অন্ধকার লাগে। তুমি আমার সূর্যোদয়। ☀️💕" },
+                { emoji: "🌹", text: "হাজার গোলাপ ফুটুক, কিন্তু তোমার মতো সুন্দর কেউ হবে না। তুমি আমার একমাত্র গোলাপ।", tag: "প্রশংসা", detail: "গোলাপের সৌন্দর্য কাঁটা সহ্য করে ফোটে। তোমার মতো সুন্দর হতে হলে কিছু কষ্ট সহ্য করতেই হয়। তুমি আমার গোলাপ। 🌹" },
+                { emoji: "💫", text: "তোমার চোখে যে জাদু আছে, তাতে আমি হারিয়ে যাই বারবার। তুমি আমার স্বপ্নের রানী।", tag: "রোমান্টিক", detail: "তোমার চোখে আমি আমার ভবিষ্যৎ দেখি। সেই চোখে আমি হারিয়ে যেতে চাই চিরকাল। তুমি আমার রানী। 👑💕" },
+                { emoji: "🌧️", text: "বৃষ্টির দিনে তোমার হাত ধরে হাঁটার স্বপ্ন দেখি। তুমি ছাড়া বৃষ্টিও ফাঁকা লাগে।", tag: "স্বপ্ন", detail: "বৃষ্টির শব্দ শুনলে তোমার কথা মনে পড়ে। তোমার সাথে বৃষ্টিতে ভিজতে চাই। তুমি আমার বৃষ্টির দিনের সঙ্গী। 🌧️💕" },
+                { emoji: "🔥", text: "তুমি আমার হৃদয়ের আগুন। তোমার ছোঁয়ায় আমার সব ঠাণ্ডা হৃদয় গরম হয়ে ওঠে।", tag: "আবেগ", detail: "তোমার প্রতি আমার ভালোবাসা কখনো ঠান্ডা হবে না। এটা চিরকাল জ্বলবে, চিরকাল পোড়াবে, চিরকাল আলো দেবে। 🔥💖" },
+                { emoji: "🦋", text: "তোমার কথা ভাবলেই পেটের মধ্যে প্রজাপতি উড়তে শুরু করে। এটাই কি ভালোবাসা?", tag: "মিষ্টি", detail: "হ্যাঁ, এটাই ভালোবাসা। তোমার কথা ভাবলেই হৃদয় দ্রুত ধড়ফড় করে। তুমি আমার প্রথম এবং শেষ ভালোবাসা। 🦋💕" },
+                { emoji: "🌅", text: "সূর্যোদয়ের আলো তোমার মুখে পড়লে পৃথিবী থেমে যায়। তুমি আমার সূর্য।", tag: "সুপ্রভাত", detail: "তোমার হাসি আমার দিনের প্রথম আলো। তুমি ছাড়া সকাল শুরু হয় না। তুমি আমার সূর্য, তুমি আমার আলো। ☀️💖" },
+                { emoji: "💍", text: "তোমার সাথে প্রতিটা মুহূর্ত আমার জীবনের সেরা মুহূর্ত। চিরকাল তোমার হতে চাই।", tag: "চিরকাল", detail: "প্রতি মুহূর্ত তোমার সাথে আমার জন্য অমূল্য। চিরকাল তোমার হাত ধরে হাঁটতে চাই। তুমি আমার চিরকাল। 💍💕" },
+                { emoji: "🎵", text: "তোমার হাসি আমার প্রিয় সঙ্গীত। তোমার কণ্ঠ আমার প্রিয় গান। তুমি আমার সবকিছু।", tag: "সঙ্গীত", detail: "তোমার হাসি শুনলে পৃথিবীর সব গান ফিকে লাগে। তুমি আমার প্রিয় সুর, তুমি আমার প্রিয় গান। 🎵💖" },
+                { emoji: "✨", text: "তুমি ছাড়া আমার জীবন অন্ধকার। তুমি আমার আলো, তুমি আমার সব।", tag: "আলো", detail: "তুমি ছাড়া আমার জীবনের কোনো রং নেই। তুমি আমার সব রং, তুমি আমার আলো, তুমি আমার জীবন। ✨💕" },
+            ],
+            en: [
+                { emoji: "💖", text: "You are the most beautiful gift in my life. I love you more with each passing day.", tag: "Love", detail: "You are the biggest blessing in my life. Your smile makes all my sorrows fly away. I want to be by your side forever. 💕" },
+                { emoji: "🌙", text: "As many stars shine in the moonlight, nothing is more beautiful than you in this world.", tag: "Romantic", detail: "Every night when I look at the moon, I think of you. You are my moon, you are my star, you are my everything. 🌙✨" },
+                { emoji: "☕", text: "You are like my first morning tea — warm, sweet, and the best part of starting my day.", tag: "Good Morning", detail: "I start every morning thinking of you. Without you, even mornings feel dark. You are my sunrise. ☀️💕" },
+                { emoji: "🌹", text: "Let a thousand roses bloom, but no one will be as beautiful as you. You are my only rose.", tag: "Praise", detail: "A rose's beauty comes from enduring thorns. To be as beautiful as you, one must endure some pain. You are my rose. 🌹" },
+                { emoji: "💫", text: "The magic in your eyes makes me lose myself again and again. You are the queen of my dreams.", tag: "Romantic", detail: "In your eyes, I see my future. I want to get lost in those eyes forever. You are my queen. 👑💕" },
+                { emoji: "🌧️", text: "I dream of walking holding your hand on a rainy day. Even rain feels empty without you.", tag: "Dream", detail: "The sound of rain reminds me of you. I want to get wet in the rain with you. You are my rainy day companion. 🌧️💕" },
+                { emoji: "🔥", text: "You are the fire of my heart. Your touch warms my cold heart completely.", tag: "Passion", detail: "My love for you will never cool down. It will burn forever, forever warm, forever light up my life. 🔥💖" },
+                { emoji: "🦋", text: "Butterflies start flying in my stomach when I think of you. Is this what love is?", tag: "Sweet", detail: "Yes, this is love. My heart races when I think of you. You are my first and last love. 🦋💕" },
+                { emoji: "🌅", text: "When sunrise light falls on your face, the world stops. You are my sun.", tag: "Good Morning", detail: "Your smile is the first light of my day. Without you, morning doesn't begin. You are my sun, you are my light. ☀️💖" },
+                { emoji: "💍", text: "Every moment with you is the best moment of my life. I want to be yours forever.", tag: "Forever", detail: "Every moment with you is priceless to me. I want to walk holding your hand forever. You are my forever. 💍💕" },
+                { emoji: "🎵", text: "Your smile is my favorite music. Your voice is my favorite song. You are my everything.", tag: "Music", detail: "Your laugh makes all the songs in the world sound dull. You are my favorite tune, you are my favorite song. 🎵💖" },
+                { emoji: "✨", text: "My life is dark without you. You are my light, you are my everything.", tag: "Light", detail: "Without you, my life has no color. You are all my colors, you are my light, you are my life. ✨💕" },
+            ]
+        };
+        let currentLang = 'bn';
+        function createHearts() {
+            const container = document.getElementById('heartsContainer');
+            const heartSymbols = ['❤️','💕','💖','💗','💓','💝','💘','💞'];
+            for (let i = 0; i < 25; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDuration = (Math.random() * 10 + 8) + 's';
+                heart.style.animationDelay = Math.random() * 10 + 's';
+                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                container.appendChild(heart);
+            }
+        }
+        function createSparkles() {
+            const container = document.getElementById('heartsContainer');
+            for (let i = 0; i < 40; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.animationDelay = Math.random() * 3 + 's';
+                sparkle.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                container.appendChild(sparkle);
+            }
+        }
+        function openPopup(id) {
+            const el = document.getElementById('popup-' + id);
+            if(el) el.classList.add('active');
+        }
+        function closePopup(id) {
+            const el = document.getElementById('popup-' + id);
+            if(el) el.classList.remove('active');
+        }
+        document.querySelectorAll('.popup-overlay').forEach(overlay => {
+            overlay.addEventListener('click', function(e) {
+                if (e.target === this) this.classList.remove('active');
+            });
+        });
+        function setLang(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            renderMessages();
+        }
+        function renderMessages() {
+            const grid = document.getElementById('messagesGrid');
+            const data = messagesData[currentLang];
+            grid.innerHTML = data.map((msg, i) => `
+                <div class="msg-card" onclick="showMsgDetail(${i})" style="animation: fadeInUp 0.5s ease ${i*0.08}s both;">
+                    <span class="msg-emoji">${msg.emoji}</span>
+                    <p class="msg-text">${msg.text}</p>
+                    <span class="msg-tag">${msg.tag}</span>
+                </div>
+            `).join('');
+        }
+        function showMsgDetail(index) {
+            const msg = messagesData[currentLang][index];
+            document.getElementById('popupMsgEmoji').textContent = msg.emoji;
+            document.getElementById('popupMsgTitle').textContent = msg.tag;
+            document.getElementById('popupMsgText').textContent = msg.detail;
+            openPopup('msg');
+        }
+        const style = document.createElement('style');
+        style.textContent = `@keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }`;
+        document.head.appendChild(style);
+        createHearts();
+        createSparkles();
+        renderMessages();
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            document.body.style.backgroundPosition = `${x*50}% ${y*50}%`;
+        });
+    </script>
+</body>
+</html>

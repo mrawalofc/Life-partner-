@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Romantic Gallery 🖼️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;600;700&family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a0a2e 0%, #4a1942 25%, #893168 50%, #c44569 75%, #f8b500 100%);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            overflow-x: hidden;
+            font-family: 'Hind Siliguri', 'Poppins', sans-serif;
+            position: relative; color: white;
+        }
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .hearts-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: 1; }
+        .heart { position: absolute; color: rgba(255,255,255,0.25); font-size: 20px; animation: floatUp linear infinite; bottom: -50px; }
+        @keyframes floatUp { 0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.8; } 100% { transform: translateY(-100vh) rotate(360deg) scale(0.5); opacity: 0; } }
+        .sparkle { position: absolute; width: 4px; height: 4px; background: white; border-radius: 50%; animation: sparkle 3s ease-in-out infinite; }
+        @keyframes sparkle { 0%, 100% { opacity: 0; transform: scale(0); } 50% { opacity: 1; transform: scale(1); } }
+        .navbar { position: fixed; top: 0; left: 0; width: 100%; z-index: 200; background: rgba(0,0,0,0.25); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 0 20px; }
+        .nav-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+        .nav-logo { font-family: 'Great Vibes', cursive; font-size: 1.8rem; color: #fff; text-shadow: 0 0 15px rgba(255,105,180,0.8); text-decoration: none; }
+        .nav-links { display: flex; gap: 6px; flex-wrap: wrap; }
+        .nav-link { padding: 7px 14px; border: none; background: transparent; color: rgba(255,255,255,0.7); font-family: 'Poppins', sans-serif; font-size: 0.82rem; cursor: pointer; border-radius: 20px; transition: all 0.3s ease; text-decoration: none; }
+        .nav-link:hover { background: rgba(255,255,255,0.15); color: white; }
+        .nav-link.active { background: rgba(255,105,180,0.4); color: white; font-weight: 600; }
+        .lang-toggle { position: fixed; top: 75px; right: 20px; z-index: 100; background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border-radius: 30px; padding: 5px; display: flex; gap: 5px; border: 1px solid rgba(255,255,255,0.2); }
+        .lang-btn { padding: 6px 16px; border: none; background: transparent; color: white; font-family: 'Poppins', sans-serif; font-size: 13px; cursor: pointer; border-radius: 25px; transition: all 0.3s ease; }
+        .lang-btn.active { background: rgba(255,255,255,0.3); font-weight: 600; }
+        .lang-btn:hover { background: rgba(255,255,255,0.2); }
+        .page-header { text-align: center; padding: 100px 20px 20px; position: relative; z-index: 10; }
+        .page-header h2 { font-family: 'Great Vibes', cursive; font-size: 3rem; text-shadow: 0 0 20px rgba(255,105,180,0.6); margin-bottom: 10px; }
+        .page-header p { color: rgba(255,255,255,0.7); font-size: 1rem; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; max-width: 1200px; margin: 0 auto; padding: 20px 20px 60px; position: relative; z-index: 10; }
+        .gallery-item { border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.3); transition: all 0.4s ease; cursor: pointer; position: relative; border: 2px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); }
+        .gallery-item:hover { transform: translateY(-10px) scale(1.03); box-shadow: 0 30px 60px rgba(0,0,0,0.4), 0 0 40px rgba(255,105,180,0.3); border-color: rgba(255,105,180,0.5); }
+        .gallery-img { width: 100%; height: 280px; object-fit: cover; display: block; transition: transform 0.5s ease; }
+        .gallery-item:hover .gallery-img { transform: scale(1.1); }
+        .gallery-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 30px 20px 20px; text-align: center; }
+        .gallery-overlay h4 { font-family: 'Great Vibes', cursive; font-size: 1.6rem; margin-bottom: 5px; }
+        .gallery-overlay p { font-size: 0.85rem; color: rgba(255,255,255,0.7); }
+        .gallery-overlay .click-icon { position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.2); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; backdrop-filter: blur(5px); opacity: 0; transform: scale(0.5); transition: all 0.3s ease; }
+        .gallery-item:hover .gallery-overlay .click-icon { opacity: 1; transform: scale(1); }
+        .css-art { width: 100%; height: 280px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+        .art-heart-shape { width: 100px; height: 100px; background: linear-gradient(135deg, #ff6b9d, #c44569); transform: rotate(-45deg); position: relative; animation: artPulse 2s ease-in-out infinite; box-shadow: 0 0 30px rgba(255,107,157,0.5); }
+        .art-heart-shape::before, .art-heart-shape::after { content: ''; width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, #ff6b9d, #c44569); position: absolute; }
+        .art-heart-shape::before { top: -50px; left: 0; }
+        .art-heart-shape::after { top: 0; left: 50px; }
+        @keyframes artPulse { 0%, 100% { transform: rotate(-45deg) scale(1); } 50% { transform: rotate(-45deg) scale(1.1); } }
+        .art-rose { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(180deg, #1a0a2e 0%, #4a1942 100%); }
+        .rose-center { width: 60px; height: 60px; border-radius: 50%; background: radial-gradient(circle, #ff1744 0%, #c2185b 70%); box-shadow: 0 0 40px rgba(255,23,68,0.5); position: relative; animation: roseSpin 8s linear infinite; }
+        .rose-petal { position: absolute; width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #e91e63, #ad1457); opacity: 0.8; }
+        @keyframes roseSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .art-stars { width: 100%; height: 100%; background: linear-gradient(180deg, #0d0221 0%, #240b36 100%); position: relative; overflow: hidden; }
+        .art-star { position: absolute; width: 4px; height: 4px; background: white; border-radius: 50%; box-shadow: 0 0 10px white; animation: twinkle 2s ease-in-out infinite; }
+        @keyframes twinkle { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+        .art-couple { width: 100%; height: 100%; background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%); display: flex; align-items: center; justify-content: center; font-size: 5rem; }
+        .art-moon { width: 100%; height: 100%; background: linear-gradient(180deg, #0f0c29 0%, #302b63 50%, #24243e 100%); display: flex; align-items: center; justify-content: center; position: relative; }
+        .moon-shape { width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, #fff9c4, #ffecb3); box-shadow: 0 0 60px rgba(255,236,179,0.6), 0 0 100px rgba(255,236,179,0.3); animation: moonGlow 3s ease-in-out infinite alternate; }
+        @keyframes moonGlow { from { box-shadow: 0 0 60px rgba(255,236,179,0.6); } to { box-shadow: 0 0 80px rgba(255,236,179,0.9); } }
+        .art-sunset { width: 100%; height: 100%; background: linear-gradient(180deg, #ff512f 0%, #dd2476 50%, #8e2de2 100%); display: flex; align-items: center; justify-content: center; font-size: 4rem; }
+        .floating-emoji { position: fixed; font-size: 24px; pointer-events: none; z-index: 5; animation: floatEmoji 10s ease-in-out infinite; }
+        @keyframes floatEmoji { 0%, 100% { transform: translate(0,0) rotate(0deg); } 25% { transform: translate(20px,-30px) rotate(10deg); } 50% { transform: translate(-10px,-50px) rotate(-5deg); } 75% { transform: translate(15px,-20px) rotate(5deg); } }
+        .popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.4s ease; padding: 20px; }
+        .popup-overlay.active { opacity: 1; visibility: visible; }
+        .gallery-popup-box { background: linear-gradient(135deg, #1a0a2e 0%, #4a1942 50%, #893168 100%); border-radius: 25px; padding: 0; max-width: 550px; width: 100%; box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 50px rgba(255,107,157,0.3); transform: scale(0.7) translateY(30px); transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); position: relative; border: 2px solid rgba(255,255,255,0.2); overflow: hidden; max-height: 85vh; overflow-y: auto; }
+        .popup-overlay.active .gallery-popup-box { transform: scale(1) translateY(0); }
+        .gallery-popup-art { width: 100%; height: 220px; }
+        .gallery-popup-content { padding: 30px; text-align: center; }
+        .gallery-popup-content h3 { font-family: 'Great Vibes', cursive; font-size: 2.2rem; margin-bottom: 15px; color: #ffb3d1; }
+        .gallery-popup-content p { font-family: 'Hind Siliguri', 'Poppins', sans-serif; font-size: 1.05rem; line-height: 1.9; color: rgba(255,255,255,0.9); }
+        .popup-hearts { font-size: 1.8rem; margin: 20px 0; animation: heartbeat 1s ease-in-out infinite; }
+        @keyframes heartbeat { 0%, 100% { transform: scale(1); } 10% { transform: scale(1.1); } 20% { transform: scale(1); } 30% { transform: scale(1.1); } 40% { transform: scale(1); } }
+        .popup-close { background: rgba(255,255,255,0.25); border: 2px solid rgba(255,255,255,0.5); color: white; padding: 12px 35px; border-radius: 30px; font-family: 'Poppins', sans-serif; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; backdrop-filter: blur(5px); }
+        .popup-close:hover { background: rgba(255,255,255,0.4); transform: scale(1.05); }
+        .popup-close:active { transform: scale(0.95); }
+        .hidden { display: none !important; }
+        @media (max-width: 768px) { .nav-link { padding: 5px 10px; font-size: 0.7rem; } .page-header h2 { font-size: 2.2rem; } .gallery-grid { grid-template-columns: 1fr; padding: 15px; } .gallery-popup-content h3 { font-size: 1.8rem; } }
+    </style>
+</head>
+<body>
+    <div class="hearts-container" id="heartsContainer"></div>
+    <nav class="navbar">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">💕 Love World</a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">🏠 Home</a>
+                <a href="messages.html" class="nav-link" target="_blank">💌 Messages</a>
+                <a href="gallery.html" class="nav-link active">🖼️ Gallery</a>
+                <a href="letter.html" class="nav-link" target="_blank">💌 Letter</a>
+                <a href="countdown.html" class="nav-link" target="_blank">⏳ Countdown</a>
+                <a href="quiz.html" class="nav-link" target="_blank">❓ Quiz</a>
+            </div>
+        </div>
+    </nav>
+    <div class="lang-toggle">
+        <button class="lang-btn active" onclick="setLang('bn')">বাংলা</button>
+        <button class="lang-btn" onclick="setLang('en')">English</button>
+    </div>
+    <div class="floating-emoji" style="top: 15%; left: 10%;">🌹</div>
+    <div class="floating-emoji" style="top: 25%; right: 15%; animation-delay: 2s;">💕</div>
+    <div class="floating-emoji" style="bottom: 20%; left: 20%; animation-delay: 4s;">💖</div>
+    <div class="floating-emoji" style="bottom: 30%; right: 10%; animation-delay: 6s;">🌸</div>
+    <div class="floating-emoji" style="top: 60%; left: 5%; animation-delay: 3s;">✨</div>
+    <div class="floating-emoji" style="top: 40%; right: 5%; animation-delay: 5s;">💫</div>
+
+    <div class="popup-overlay" id="popup-gallery">
+        <div class="gallery-popup-box">
+            <div id="galleryPopupArt"></div>
+            <div class="gallery-popup-content">
+                <h3 id="galleryPopupTitle"></h3>
+                <p id="galleryPopupText"></p>
+                <div class="popup-hearts">💖💗💖💗💖</div>
+                <button class="popup-close" onclick="closePopup('gallery')">Close 💕</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-header">
+        <h2>Romantic Gallery</h2>
+        <p>Click any image to reveal a love message 🖼️💌</p>
+    </div>
+    <div class="gallery-grid" id="galleryGrid"></div>
+
+    <script>
+        const galleryData = {
+            bn: [
+                { type: "heart", title: "অনন্ত ভালোবাসা", text: "তোমার হৃদয়ে যে জায়গা পেয়েছি, সেটাই আমার সবচেয়ে বড় সম্পদ। চিরকাল তোমার হয়ে থাকতে চাই। তুমি আমার ভালোবাসার শেষ ঠিকানা। 💕", emoji: "💗" },
+                { type: "rose", title: "গোলাপের মতো তুমি", text: "গোলাপ ফোটার আগে কাঁটা সহ্য করে। তোমার মতো সুন্দর হতে হলে কিছু কষ্ট সহ্য করতেই হয়। তুমি আমার গোলাপ, তুমি আমার প্রিয়তম। 🌹", emoji: "🌹" },
+                { type: "stars", title: "তারার নিচে তুমি", text: "রাতের আকাশের হাজার তারার মধ্যে তুমি আমার সবচেয়ে উজ্জ্বল তারা। তোমার আলোয় আমার জীবন রঙিন হয়ে ওঠে। ✨", emoji: "⭐" },
+                { type: "couple", title: "দুজন একসাথে", text: "তোমার হাত ধরলে পৃথিবীর সব সমস্যা ছোট হয়ে যায়। তুমি আমার শক্তি, তুমি আমার ভরসা, তুমি আমার সবকিছু। 🤝💕", emoji: "💑" },
+                { type: "moon", title: "চাঁদের কথা", text: "চাঁদ রাতে উঠে তোমাকে দেখতে। কারণ চাঁদও জানে এই পৃথিবীর সবচেয়ে সুন্দর তুমি। তুমি আমার চাঁদ। 🌙", emoji: "🌙" },
+                { type: "sunset", title: "সূর্যাস্তের প্রতিজ্ঞা", text: "প্রতি সূর্যাস্তে প্রতিজ্ঞা করি — কাল সকালেও তোমাকে আরও বেশি ভালোবাসবো। এটাই আমার প্রতিদিনের প্রতিজ্ঞা। 🌅", emoji: "🌇" },
+            ],
+            en: [
+                { type: "heart", title: "Infinite Love", text: "The place I have found in your heart is my greatest treasure. I want to be yours forever. You are my love's final destination. 💕", emoji: "💗" },
+                { type: "rose", title: "Rose Like You", text: "A rose endures thorns before it blooms. To be as beautiful as you, one must endure some pain. You are my rose, you are my dearest. 🌹", emoji: "🌹" },
+                { type: "stars", title: "You Under the Stars", text: "Among thousands of stars in the night sky, you are my brightest star. Your light colors my life. ✨", emoji: "⭐" },
+                { type: "couple", title: "Together Forever", text: "When I hold your hand, all the world's problems become small. You are my strength, you are my trust, you are my everything. 🤝💕", emoji: "💑" },
+                { type: "moon", title: "Moon's Tale", text: "The moon rises at night to see you. Because even the moon knows you are the most beautiful in this world. You are my moon. 🌙", emoji: "🌙" },
+                { type: "sunset", title: "Sunset Promise", text: "With every sunset, I promise — tomorrow morning I will love you even more. This is my daily promise. 🌅", emoji: "🌇" },
+            ]
+        };
+        let currentLang = 'bn';
+        function createHearts() {
+            const container = document.getElementById('heartsContainer');
+            const heartSymbols = ['❤️','💕','💖','💗','💓','💝','💘','💞'];
+            for (let i = 0; i < 25; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDuration = (Math.random() * 10 + 8) + 's';
+                heart.style.animationDelay = Math.random() * 10 + 's';
+                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                container.appendChild(heart);
+            }
+        }
+        function createSparkles() {
+            const container = document.getElementById('heartsContainer');
+            for (let i = 0; i < 40; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.animationDelay = Math.random() * 3 + 's';
+                sparkle.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                container.appendChild(sparkle);
+            }
+        }
+        function closePopup(id) {
+            const el = document.getElementById('popup-' + id);
+            if(el) el.classList.remove('active');
+        }
+        document.querySelectorAll('.popup-overlay').forEach(overlay => {
+            overlay.addEventListener('click', function(e) {
+                if (e.target === this) this.classList.remove('active');
+            });
+        });
+        function setLang(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            renderGallery();
+        }
+        function getArtHTML(type) {
+            switch(type) {
+                case 'heart': return `<div class="css-art"><div class="art-heart-shape"></div></div>`;
+                case 'rose':
+                    let roseHTML = `<div class="css-art art-rose"><div class="rose-center">`;
+                    for(let i=0; i<8; i++) { const angle = i * 45; roseHTML += `<div class="rose-petal" style="transform: rotate(${angle}deg) translateX(35px);"></div>`; }
+                    roseHTML += `</div></div>`;
+                    return roseHTML;
+                case 'stars':
+                    let starsHTML = `<div class="css-art art-stars">`;
+                    for(let i=0; i<30; i++) { starsHTML += `<div class="art-star" style="left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${Math.random()*2}s;"></div>`; }
+                    starsHTML += `</div>`;
+                    return starsHTML;
+                case 'couple': return `<div class="css-art art-couple">💑</div>`;
+                case 'moon': return `<div class="css-art art-moon"><div class="moon-shape"></div></div>`;
+                case 'sunset': return `<div class="css-art art-sunset">🌅</div>`;
+                default: return `<div class="css-art"><div class="art-heart-shape"></div></div>`;
+            }
+        }
+        function renderGallery() {
+            const grid = document.getElementById('galleryGrid');
+            const data = galleryData[currentLang];
+            grid.innerHTML = data.map((item, i) => `
+                <div class="gallery-item" onclick="openGalleryPopup(${i})" style="animation: fadeInUp 0.6s ease ${i*0.15}s both;">
+                    ${getArtHTML(item.type)}
+                    <div class="gallery-overlay">
+                        <div class="click-icon">🔍</div>
+                        <h4>${item.title}</h4>
+                        <p>Click to read the message</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+        function openGalleryPopup(index) {
+            const item = galleryData[currentLang][index];
+            document.getElementById('galleryPopupArt').innerHTML = getArtHTML(item.type);
+            document.getElementById('galleryPopupArt').className = 'gallery-popup-art';
+            document.getElementById('galleryPopupTitle').textContent = item.emoji + ' ' + item.title;
+            document.getElementById('galleryPopupText').textContent = item.text;
+            document.getElementById('popup-gallery').classList.add('active');
+        }
+        const style = document.createElement('style');
+        style.textContent = `@keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }`;
+        document.head.appendChild(style);
+        createHearts();
+        createSparkles();
+        renderGallery();
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            document.body.style.backgroundPosition = `${x*50}% ${y*50}%`;
+        });
+    </script>
+</body>
+</html>
