@@ -51,18 +51,18 @@
             border-radius: 15px; padding: 18px 25px; color: white; font-size: 1.05rem;
             cursor: pointer; transition: all 0.3s ease; text-align: left;
             font-family: 'Hind Siliguri', 'Poppins', sans-serif;
+            display: flex; align-items: center; gap: 12px;
         }
         .quiz-option:hover { background: rgba(255,107,157,0.3); border-color: rgba(255,107,157,0.5); transform: translateX(10px); }
         .quiz-option.correct { background: rgba(46,213,115,0.3); border-color: #2ed573; }
         .quiz-option.wrong { background: rgba(255,71,87,0.3); border-color: #ff4757; }
+        .quiz-option .opt-emoji { font-size: 1.5rem; }
         .quiz-progress { display: flex; justify-content: center; gap: 8px; margin-bottom: 30px; }
         .quiz-dot { width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.2); transition: all 0.3s ease; }
         .quiz-dot.active { background: #ff6b9d; box-shadow: 0 0 10px rgba(255,107,157,0.5); }
         .quiz-dot.correct { background: #2ed573; }
         .quiz-dot.wrong { background: #ff4757; }
-        .quiz-result {
-            display: none; text-align: center;
-        }
+        .quiz-result { display: none; text-align: center; }
         .quiz-result.show { display: block; animation: fadeIn 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
         .result-emoji { font-size: 5rem; margin-bottom: 20px; }
@@ -124,7 +124,7 @@
         <div class="quiz-card quiz-result" id="quizResult">
             <div class="result-emoji" id="resultEmoji">🎉</div>
             <div class="result-title" id="resultTitle">Quiz Complete!</div>
-            <div class="result-score" id="resultScore">0/5</div>
+            <div class="result-score" id="resultScore">0/10</div>
             <div class="result-hearts">💖💗💖💗💖</div>
             <div class="result-text" id="resultText"></div>
             <button class="restart-btn" onclick="restartQuiz()">Play Again 💕</button>
@@ -135,82 +135,244 @@
         const quizData = {
             bn: [
                 {
+                    emoji: "🎨",
+                    question: "আমার প্রিয় রং কোনটি?",
+                    options: [
+                        { text: "কালো ও নীল", emoji: "🖤💙" },
+                        { text: "লাল ও গোলাপি", emoji: "❤️💖" },
+                        { text: "সবুজ ও হলুদ", emoji: "💚💛" },
+                        { text: "সাদা ও ধূসর", emoji: "🤍🩶" }
+                    ],
+                    correct: 0
+                },
+                {
+                    emoji: "📍",
+                    question: "আমার প্রিয় জায়গা কোনটি?",
+                    options: [
+                        { text: "তোমার হৃদয়", emoji: "❤️" },
+                        { text: "সমুদ্র সৈকত", emoji: "🏖️" },
+                        { text: "পাহাড়ি এলাকা", emoji: "🏔️" },
+                        { text: "শহরের বাজার", emoji: "🏙️" }
+                    ],
+                    correct: 0
+                },
+                {
+                    emoji: "👁️",
+                    question: "আমি সবচেয়ে ভালোবাসি কী দেখতে?",
+                    options: [
+                        { text: "আকাশ", emoji: "☁️" },
+                        { text: "সমুদ্র", emoji: "🌊" },
+                        { text: "পাহাড়", emoji: "⛰️" },
+                        { text: "জঙ্গল", emoji: "🌲" }
+                    ],
+                    correct: 0
+                },
+                {
+                    emoji: "🌙",
+                    question: "আমার প্রিয় রোমান্টিক সময় কোনটি?",
+                    options: [
+                        { text: "রাত", emoji: "🌙" },
+                        { text: "সকাল", emoji: "🌅" },
+                        { text: "দুপুর", emoji: "☀️" },
+                        { text: "বিকেল", emoji: "🌇" }
+                    ],
+                    correct: 0
+                },
+                {
                     emoji: "🎂",
                     question: "আমার প্রিয় জন্মদিনের কেকের স্বাদ কোনটি?",
-                    options: ["চকোলেট", "ভ্যানিলা", "স্ট্রবেরি", "বutterscotch"],
+                    options: [
+                        { text: "চকোলেট", emoji: "🍫" },
+                        { text: "ভ্যানিলা", emoji: "🍦" },
+                        { text: "স্ট্রবেরি", emoji: "🍓" },
+                        { text: "বutterscotch", emoji: "🍮" }
+                    ],
                     correct: 0
                 },
                 {
                     emoji: "🎬",
                     question: "আমার প্রিয় মুভির ধরন কোনটি?",
-                    options: ["রোমান্টিক", "অ্যাকশন", "হরর", "কমেডি"],
+                    options: [
+                        { text: "রোমান্টিক", emoji: "💕" },
+                        { text: "অ্যাকশন", emoji: "💥" },
+                        { text: "হরর", emoji: "👻" },
+                        { text: "কমেডি", emoji: "😂" }
+                    ],
                     correct: 0
                 },
                 {
                     emoji: "🍕",
                     question: "আমার প্রিয় খাবার কোনটি?",
-                    options: ["বিরিয়ানি", "পিজ্জা", "বার্গার", "পাস্তা"],
+                    options: [
+                        { text: "বিরিয়ানি", emoji: "🍛" },
+                        { text: "পিজ্জা", emoji: "🍕" },
+                        { text: "বার্গার", emoji: "🍔" },
+                        { text: "পাস্তা", emoji: "🍝" }
+                    ],
                     correct: 0
                 },
                 {
                     emoji: "🎵",
                     question: "আমার প্রিয় গানের ধরন কোনটি?",
-                    options: ["সফট রোমান্টিক", "রক", "পপ", "ক্লাসিক্যাল"],
+                    options: [
+                        { text: "সফট রোমান্টিক", emoji: "🎶" },
+                        { text: "রক", emoji: "🎸" },
+                        { text: "পপ", emoji: "🎤" },
+                        { text: "ক্লাসিক্যাল", emoji: "🎻" }
+                    ],
                     correct: 0
                 },
                 {
                     emoji: "🌅",
-                    question: "আমি সূর্যোদয় নাকি সূর্যাস্ত পছন্দ করি?",
-                    options: ["সূর্যোদয়", "সূর্যাস্ত", "দুটোই", "কোনোটাই না"],
-                    correct: 1
+                    question: "আমি সূর্যোদয় নাকি সূর্যাস্ত পছন্দ করি?",
+                    options: [
+                        { text: "সূর্যাস্ত", emoji: "🌇" },
+                        { text: "সূর্যোদয়", emoji: "🌅" },
+                        { text: "দুটোই", emoji: "☀️🌙" },
+                        { text: "কোনোটাই না", emoji: "😐" }
+                    ],
+                    correct: 0
+                },
+                {
+                    emoji: "💝",
+                    question: "আমার কাছে সবচেয়ে মূল্যবান জিনিস কোনটি?",
+                    options: [
+                        { text: "তোমার ভালোবাসা", emoji: "💖" },
+                        { text: "টাকা-পয়সা", emoji: "💰" },
+                        { text: "গাড়ি-বাড়ি", emoji: "🏠" },
+                        { text: "খ্যাতি", emoji: "⭐" }
+                    ],
+                    correct: 0
                 }
             ],
             en: [
                 {
+                    emoji: "🎨",
+                    question: "What is my favorite color?",
+                    options: [
+                        { text: "Black & Blue", emoji: "🖤💙" },
+                        { text: "Red & Pink", emoji: "❤️💖" },
+                        { text: "Green & Yellow", emoji: "💚💛" },
+                        { text: "White & Grey", emoji: "🤍🩶" }
+                    ],
+                    correct: 0
+                },
+                {
+                    emoji: "📍",
+                    question: "What is my favorite place?",
+                    options: [
+                        { text: "Your Heart", emoji: "❤️" },
+                        { text: "Beach", emoji: "🏖️" },
+                        { text: "Mountains", emoji: "🏔️" },
+                        { text: "City Market", emoji: "🏙️" }
+                    ],
+                    correct: 0
+                },
+                {
+                    emoji: "👁️",
+                    question: "What do I love to see the most?",
+                    options: [
+                        { text: "The Sky", emoji: "☁️" },
+                        { text: "The Ocean", emoji: "🌊" },
+                        { text: "Mountains", emoji: "⛰️" },
+                        { text: "Forest", emoji: "🌲" }
+                    ],
+                    correct: 0
+                },
+                {
+                    emoji: "🌙",
+                    question: "What is my favorite romantic time?",
+                    options: [
+                        { text: "Night", emoji: "🌙" },
+                        { text: "Morning", emoji: "🌅" },
+                        { text: "Noon", emoji: "☀️" },
+                        { text: "Evening", emoji: "🌇" }
+                    ],
+                    correct: 0
+                },
+                {
                     emoji: "🎂",
                     question: "What is my favorite birthday cake flavor?",
-                    options: ["Chocolate", "Vanilla", "Strawberry", "Butterscotch"],
+                    options: [
+                        { text: "Chocolate", emoji: "🍫" },
+                        { text: "Vanilla", emoji: "🍦" },
+                        { text: "Strawberry", emoji: "🍓" },
+                        { text: "Butterscotch", emoji: "🍮" }
+                    ],
                     correct: 0
                 },
                 {
                     emoji: "🎬",
                     question: "What is my favorite movie genre?",
-                    options: ["Romantic", "Action", "Horror", "Comedy"],
+                    options: [
+                        { text: "Romantic", emoji: "💕" },
+                        { text: "Action", emoji: "💥" },
+                        { text: "Horror", emoji: "👻" },
+                        { text: "Comedy", emoji: "😂" }
+                    ],
                     correct: 0
                 },
                 {
                     emoji: "🍕",
                     question: "What is my favorite food?",
-                    options: ["Biryani", "Pizza", "Burger", "Pasta"],
+                    options: [
+                        { text: "Biryani", emoji: "🍛" },
+                        { text: "Pizza", emoji: "🍕" },
+                        { text: "Burger", emoji: "🍔" },
+                        { text: "Pasta", emoji: "🍝" }
+                    ],
                     correct: 0
                 },
                 {
                     emoji: "🎵",
                     question: "What is my favorite music genre?",
-                    options: ["Soft Romantic", "Rock", "Pop", "Classical"],
+                    options: [
+                        { text: "Soft Romantic", emoji: "🎶" },
+                        { text: "Rock", emoji: "🎸" },
+                        { text: "Pop", emoji: "🎤" },
+                        { text: "Classical", emoji: "🎻" }
+                    ],
                     correct: 0
                 },
                 {
                     emoji: "🌅",
                     question: "Do I prefer sunrise or sunset?",
-                    options: ["Sunrise", "Sunset", "Both", "Neither"],
-                    correct: 1
+                    options: [
+                        { text: "Sunset", emoji: "🌇" },
+                        { text: "Sunrise", emoji: "🌅" },
+                        { text: "Both", emoji: "☀️🌙" },
+                        { text: "Neither", emoji: "😐" }
+                    ],
+                    correct: 0
+                },
+                {
+                    emoji: "💝",
+                    question: "What is the most valuable thing to me?",
+                    options: [
+                        { text: "Your Love", emoji: "💖" },
+                        { text: "Money", emoji: "💰" },
+                        { text: "House & Car", emoji: "🏠" },
+                        { text: "Fame", emoji: "⭐" }
+                    ],
+                    correct: 0
                 }
             ]
         };
 
         const resultTexts = {
             bn: {
-                perfect: "তুমি আমাকে পুরোপুরি চিনো! তুমি আমার সত্যিকারের ভালোবাসা! 💕",
-                good: "ভালো করেছো! তুমি আমাকে বেশ ভালোভাবেই চেনো! 💖",
-                okay: "আরেকটু চেষ্টা করো! তবে তুমি তোমার মতোই সুন্দর! 💗",
-                low: "কোনো ব্যাপার না! ভালোবাসা মানে সব জানা নয়, ভালোবাসা মানে বোঝা! 💝"
+                perfect: "তুমি আমাকে পুরোপুরি চিনো! তুমি আমার সত্যিকারের ভালোবাসা! তোমার মতো কেউ নেই! 💕✨",
+                excellent: "দারুণ! তুমি আমাকে খুব ভালোভাবে চেনো! তুমি আমার স্পেশাল! 💖",
+                good: "ভালো করেছো! তুমি আমাকে বেশ ভালোভাবেই চেনো! আরেকটু চেষ্টা করো! 💗",
+                okay: "আরেকটু চেষ্টা করো! তবে তুমি তোমার মতোই সুন্দর! আমি তোমাকে ভালোবাসি! 💝",
+                low: "কোনো ব্যাপার না! ভালোবাসা মানে সব জানা নয়, ভালোবাসা মানে বোঝা! আমি তোমাকে ভালোবাসি! 💕"
             },
             en: {
-                perfect: "You know me completely! You are my true love! 💕",
-                good: "Well done! You know me pretty well! 💖",
-                okay: "Try a bit more! But you are beautiful just the way you are! 💗",
-                low: "No worries! Love is not about knowing everything, love is about understanding! 💝"
+                perfect: "You know me completely! You are my true love! No one is like you! 💕✨",
+                excellent: "Amazing! You know me very well! You are my special one! 💖",
+                good: "Well done! You know me pretty well! Try a bit more! 💗",
+                okay: "Try a bit more! But you are beautiful just the way you are! I love you! 💝",
+                low: "No worries! Love is not about knowing everything, love is about understanding! I love you! 💕"
             }
         };
 
@@ -272,7 +434,7 @@
             q.options.forEach((opt, idx) => {
                 const btn = document.createElement('div');
                 btn.className = 'quiz-option';
-                btn.textContent = opt;
+                btn.innerHTML = `<span class="opt-emoji">${opt.emoji}</span><span>${opt.text}</span>`;
                 btn.onclick = () => selectAnswer(idx);
                 optsDiv.appendChild(btn);
             });
@@ -304,7 +466,8 @@
             const texts = resultTexts[currentLang];
             let text = texts.low;
             let emoji = "😅";
-            if (score === total) { text = texts.perfect; emoji = "🎉"; }
+            if (score === total) { text = texts.perfect; emoji = "🎉🏆"; }
+            else if (score >= total * 0.8) { text = texts.excellent; emoji = "🌟"; }
             else if (score >= total * 0.6) { text = texts.good; emoji = "😊"; }
             else if (score >= total * 0.4) { text = texts.okay; emoji = "🙂"; }
             document.getElementById('resultEmoji').textContent = emoji;
