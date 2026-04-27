@@ -64,6 +64,23 @@
         .moon-shape { width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, #fff9c4, #ffecb3); box-shadow: 0 0 60px rgba(255,236,179,0.6), 0 0 100px rgba(255,236,179,0.3); animation: moonGlow 3s ease-in-out infinite alternate; }
         @keyframes moonGlow { from { box-shadow: 0 0 60px rgba(255,236,179,0.6); } to { box-shadow: 0 0 80px rgba(255,236,179,0.9); } }
         .art-sunset { width: 100%; height: 100%; background: linear-gradient(180deg, #ff512f 0%, #dd2476 50%, #8e2de2 100%); display: flex; align-items: center; justify-content: center; font-size: 4rem; }
+        .art-ocean { width: 100%; height: 100%; background: linear-gradient(180deg, #006994 0%, #003d5c 50%, #001a2e 100%); position: relative; overflow: hidden; }
+        .art-wave { position: absolute; bottom: 0; left: 0; right: 0; height: 60px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); animation: wave 3s ease-in-out infinite; }
+        @keyframes wave { 0%, 100% { transform: translateX(-100%); } 50% { transform: translateX(100%); } }
+        .art-rain { width: 100%; height: 100%; background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%); position: relative; overflow: hidden; }
+        .art-raindrop { position: absolute; width: 2px; height: 15px; background: linear-gradient(transparent, rgba(255,255,255,0.6)); animation: rainFall 1s linear infinite; }
+        @keyframes rainFall { 0% { transform: translateY(-20px); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(300px); opacity: 0; } }
+        .art-coffee { width: 100%; height: 100%; background: linear-gradient(135deg, #6f4e37 0%, #8b6914 50%, #a0522d 100%); display: flex; align-items: center; justify-content: center; font-size: 4rem; }
+        .art-butterfly { width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; position: relative; }
+        .butterfly-wing { width: 40px; height: 60px; background: linear-gradient(135deg, #ff6b9d, #c44569); border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; animation: wingFlap 0.5s ease-in-out infinite alternate; }
+        @keyframes wingFlap { from { transform: scaleX(1); } to { transform: scaleX(0.3); } }
+        .art-book { width: 100%; height: 100%; background: linear-gradient(135deg, #8e44ad 0%, #6c3483 100%); display: flex; align-items: center; justify-content: center; font-size: 4rem; }
+        .art-music { width: 100%; height: 100%; background: linear-gradient(135deg, #1db954 0%, #1ed760 50%, #169c46 100%); display: flex; align-items: center; justify-content: center; position: relative; }
+        .music-note { position: absolute; font-size: 2rem; animation: noteFloat 2s ease-in-out infinite; }
+        @keyframes noteFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        .art-phone { width: 100%; height: 100%; background: linear-gradient(135deg, #2c3e50 0%, #4a6741 100%); display: flex; align-items: center; justify-content: center; font-size: 4rem; }
+        .art-ring { width: 100%; height: 100%; background: linear-gradient(135deg, #ffd700 0%, #ffaa00 50%, #ff8c00 100%); display: flex; align-items: center; justify-content: center; font-size: 4rem; }
+        .art-hug { width: 100%; height: 100%; background: linear-gradient(135deg, #ffafbd 0%, #ffc3a0 100%); display: flex; align-items: center; justify-content: center; font-size: 5rem; }
         .floating-emoji { position: fixed; font-size: 24px; pointer-events: none; z-index: 5; animation: floatEmoji 10s ease-in-out infinite; }
         @keyframes floatEmoji { 0%, 100% { transform: translate(0,0) rotate(0deg); } 25% { transform: translate(20px,-30px) rotate(10deg); } 50% { transform: translate(-10px,-50px) rotate(-5deg); } 75% { transform: translate(15px,-20px) rotate(5deg); } }
         .popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; z-index: 1000; opacity: 0; visibility: hidden; transition: all 0.4s ease; padding: 20px; }
@@ -82,6 +99,7 @@
         .hidden { display: none !important; }
         @media (max-width: 768px) { .nav-link { padding: 5px 10px; font-size: 0.7rem; } .page-header h2 { font-size: 2.2rem; } .gallery-grid { grid-template-columns: 1fr; padding: 15px; } .gallery-popup-content h3 { font-size: 1.8rem; } }
     </style>
+<base target="_blank">
 </head>
 <body>
     <div class="hearts-container" id="heartsContainer"></div>
@@ -123,19 +141,28 @@
 
     <div class="page-header">
         <h2>Romantic Gallery</h2>
-        <p>Click any image to reveal a love message 🖼️💌</p>
+        <p>Click any picture to reveal a love message 🖼️💌</p>
     </div>
     <div class="gallery-grid" id="galleryGrid"></div>
 
     <script>
         const galleryData = {
             bn: [
-                { type: "heart", title: "অনন্ত ভালোবাসা", text: "তোমার হৃদয়ে যে জায়গা পেয়েছি, সেটাই আমার সবচেয়ে বড় সম্পদ। চিরকাল তোমার হয়ে থাকতে চাই। তুমি আমার ভালোবাসার শেষ ঠিকানা। 💕", emoji: "💗" },
-                { type: "rose", title: "গোলাপের মতো তুমি", text: "গোলাপ ফোটার আগে কাঁটা সহ্য করে। তোমার মতো সুন্দর হতে হলে কিছু কষ্ট সহ্য করতেই হয়। তুমি আমার গোলাপ, তুমি আমার প্রিয়তম। 🌹", emoji: "🌹" },
-                { type: "stars", title: "তারার নিচে তুমি", text: "রাতের আকাশের হাজার তারার মধ্যে তুমি আমার সবচেয়ে উজ্জ্বল তারা। তোমার আলোয় আমার জীবন রঙিন হয়ে ওঠে। ✨", emoji: "⭐" },
-                { type: "couple", title: "দুজন একসাথে", text: "তোমার হাত ধরলে পৃথিবীর সব সমস্যা ছোট হয়ে যায়। তুমি আমার শক্তি, তুমি আমার ভরসা, তুমি আমার সবকিছু। 🤝💕", emoji: "💑" },
-                { type: "moon", title: "চাঁদের কথা", text: "চাঁদ রাতে উঠে তোমাকে দেখতে। কারণ চাঁদও জানে এই পৃথিবীর সবচেয়ে সুন্দর তুমি। তুমি আমার চাঁদ। 🌙", emoji: "🌙" },
+                { type: "heart", title: "অনন্ত ভালোবাসা", text: "তোমার হৃদয়ে যে জায়গা পেয়েছি, সেটাই আমার সবচেয়ে বড় সম্পদ। চিরকাল তোমার হয়ে থাকতে চাই। তুমি আমার ভালোবাসার শেষ ঠিকানা। 💕", emoji: "💗" },
+                { type: "rose", title: "গোলাপের মতো তুমি", text: "গোলাপ ফোটার আগে কাঁটা সহ্য করে। তোমার মতো সুন্দর হতে হলে কিছু কষ্ট সহ্য করতেই হয়। তুমি আমার গোলাপ, তুমি আমার প্রিয়তম। 🌹", emoji: "🌹" },
+                { type: "stars", title: "তারার নিচে তুমি", text: "রাতের আকাশের হাজার তারার মধ্যে তুমি আমার সবচেয়ে উজ্জ্বল তারা। তোমার আলোয় আমার জীবন রঙিন হয়ে ওঠে। ✨", emoji: "⭐" },
+                { type: "couple", title: "দুজন একসাথে", text: "তোমার হাত ধরলে পৃথিবীর সব সমস্যা ছোট হয়ে যায়। তুমি আমার শক্তি, তুমি আমার ভরসা, তুমি আমার সবকিছু। 🤝💕", emoji: "💑" },
+                { type: "moon", title: "চাঁদের কথা", text: "চাঁদ রাতে উঠে তোমাকে দেখতে। কারণ চাঁদও জানে এই পৃথিবীর সবচেয়ে সুন্দর তুমি। তুমি আমার চাঁদ। 🌙", emoji: "🌙" },
                 { type: "sunset", title: "সূর্যাস্তের প্রতিজ্ঞা", text: "প্রতি সূর্যাস্তে প্রতিজ্ঞা করি — কাল সকালেও তোমাকে আরও বেশি ভালোবাসবো। এটাই আমার প্রতিদিনের প্রতিজ্ঞা। 🌅", emoji: "🌇" },
+                { type: "ocean", title: "সমুদ্রের গভীরতা", text: "সমুদ্রের গভীরতা যতই হোক, আমার ভালোবাসা তার চেয়েও গভীর। তুমি ছাড়া আমার জীবন শূন্য। 🌊", emoji: "🌊" },
+                { type: "rain", title: "বৃষ্টির দিনে তুমি", text: "বৃষ্টির শব্দ শুনলে তোমার কথা মনে পড়ে। তোমার সাথে বৃষ্টিতে ভিজতে চাই। তুমি আমার বৃষ্টির দিনের সঙ্গী। 🌧️", emoji: "🌧️" },
+                { type: "coffee", title: "সকালের প্রথম চা", text: "তুমি আমার সকালের প্রথম চা — গরম, মিষ্টি, আর আমার দিন শুরুর সেরা অংশ। তুমি ছাড়া সকাল শুরু হয় না। ☕", emoji: "☕" },
+                { type: "butterfly", title: "প্রজাপতির মতো তুমি", text: "তোমার কথা ভাবলেই পেটের মধ্যে প্রজাপতি উড়তে শুরু করে। এটাই কি ভালোবাসা? হ্যাঁ, এটাই ভালোবাসা! 🦋", emoji: "🦋" },
+                { type: "book", title: "আমার প্রিয় গল্প", text: "আমাদের ভালোবাসার গল্প হাজার বইয়ের চেয়েও সুন্দর। প্রতিটা পাতায় লেখা আছে তোমার নাম। 📖💕", emoji: "📖" },
+                { type: "music", title: "তোমার সুরে", text: "তোমার হাসি আমার প্রিয় সঙ্গীত। তোমার কণ্ঠ আমার প্রিয় গান। তুমি আমার সবকিছু। 🎵", emoji: "🎵" },
+                { type: "phone", title: "তোমার কলের অপেক্ষায়", text: "তোমার কলের অপেক্ষায় প্রতিটা সেকেন্ড যেন এক যুগ। তোমার কণ্ঠ শুনলে পৃথিবী থেমে যায়। 📱💕", emoji: "📱" },
+                { type: "ring", title: "চিরকালের প্রতিজ্ঞা", text: "এই আংটি তোমাকে দেওয়ার স্বপ্ন দেখি। চিরকাল তোমার হাত ধরে হাঁটতে চাই। তুমি আমার চিরকাল। 💍", emoji: "💍" },
+                { type: "hug", title: "তোমার আলিঙ্গন", text: "তোমার আলিঙ্গনে পৃথিবীর সব কষ্ট মুছে যায়। তোমার বুকে মাথা রাখলে শান্তি পাই। তুমি আমার আশ্রয়। 🤗", emoji: "🤗" }
             ],
             en: [
                 { type: "heart", title: "Infinite Love", text: "The place I have found in your heart is my greatest treasure. I want to be yours forever. You are my love's final destination. 💕", emoji: "💗" },
@@ -144,6 +171,15 @@
                 { type: "couple", title: "Together Forever", text: "When I hold your hand, all the world's problems become small. You are my strength, you are my trust, you are my everything. 🤝💕", emoji: "💑" },
                 { type: "moon", title: "Moon's Tale", text: "The moon rises at night to see you. Because even the moon knows you are the most beautiful in this world. You are my moon. 🌙", emoji: "🌙" },
                 { type: "sunset", title: "Sunset Promise", text: "With every sunset, I promise — tomorrow morning I will love you even more. This is my daily promise. 🌅", emoji: "🌇" },
+                { type: "ocean", title: "Depth of the Ocean", text: "No matter how deep the ocean is, my love is deeper than that. Without you, my life is empty. 🌊", emoji: "🌊" },
+                { type: "rain", title: "You in the Rain", text: "The sound of rain reminds me of you. I want to get wet in the rain with you. You are my rainy day companion. 🌧️", emoji: "🌧️" },
+                { type: "coffee", title: "Morning Tea", text: "You are my first morning tea — warm, sweet, and the best part of starting my day. Without you, morning doesn't begin. ☕", emoji: "☕" },
+                { type: "butterfly", title: "Butterfly Like You", text: "Butterflies start flying in my stomach when I think of you. Is this what love is? Yes, this is love! 🦋", emoji: "🦋" },
+                { type: "book", title: "My Favorite Story", text: "Our love story is more beautiful than a thousand books. Every page is written with your name. 📖💕", emoji: "📖" },
+                { type: "music", title: "In Your Tune", text: "Your smile is my favorite music. Your voice is my favorite song. You are my everything. 🎵", emoji: "🎵" },
+                { type: "phone", title: "Waiting for Your Call", text: "Every second waiting for your call feels like an eternity. When I hear your voice, the world stops. 📱💕", emoji: "📱" },
+                { type: "ring", title: "Promise of Forever", text: "I dream of giving you this ring. I want to walk holding your hand forever. You are my forever. 💍", emoji: "💍" },
+                { type: "hug", title: "Your Embrace", text: "In your embrace, all the pain of the world disappears. When I rest my head on your chest, I find peace. You are my shelter. 🤗", emoji: "🤗" }
             ]
         };
         let currentLang = 'bn';
@@ -204,6 +240,28 @@
                 case 'couple': return `<div class="css-art art-couple">💑</div>`;
                 case 'moon': return `<div class="css-art art-moon"><div class="moon-shape"></div></div>`;
                 case 'sunset': return `<div class="css-art art-sunset">🌅</div>`;
+                case 'ocean':
+                    let oceanHTML = `<div class="css-art art-ocean">`;
+                    for(let i=0; i<3; i++) { oceanHTML += `<div class="art-wave" style="animation-delay:${i*0.5}s;bottom:${i*15}px;"></div>`; }
+                    oceanHTML += `🌊</div>`;
+                    return oceanHTML;
+                case 'rain':
+                    let rainHTML = `<div class="css-art art-rain">`;
+                    for(let i=0; i<25; i++) { rainHTML += `<div class="art-raindrop" style="left:${Math.random()*100}%;animation-delay:${Math.random()*1}s;animation-duration:${Math.random()*0.5+0.5}s;"></div>`; }
+                    rainHTML += `🌧️</div>`;
+                    return rainHTML;
+                case 'coffee': return `<div class="css-art art-coffee">☕</div>`;
+                case 'butterfly':
+                    return `<div class="css-art art-butterfly"><div style="display:flex;gap:5px;align-items:center;"><div class="butterfly-wing"></div><div style="width:10px;height:10px;background:#ff6b9d;border-radius:50%;"></div><div class="butterfly-wing" style="transform:scaleX(-1);"></div></div></div>`;
+                case 'book': return `<div class="css-art art-book">📖</div>`;
+                case 'music':
+                    let musicHTML = `<div class="css-art art-music">`;
+                    for(let i=0; i<5; i++) { musicHTML += `<div class="music-note" style="left:${20+i*15}%;top:${30+Math.random()*40}%;animation-delay:${i*0.3}s;">♪</div>`; }
+                    musicHTML += `🎵</div>`;
+                    return musicHTML;
+                case 'phone': return `<div class="css-art art-phone">📱</div>`;
+                case 'ring': return `<div class="css-art art-ring">💍</div>`;
+                case 'hug': return `<div class="css-art art-hug">🤗</div>`;
                 default: return `<div class="css-art"><div class="art-heart-shape"></div></div>`;
             }
         }
@@ -211,7 +269,7 @@
             const grid = document.getElementById('galleryGrid');
             const data = galleryData[currentLang];
             grid.innerHTML = data.map((item, i) => `
-                <div class="gallery-item" onclick="openGalleryPopup(${i})" style="animation: fadeInUp 0.6s ease ${i*0.15}s both;">
+                <div class="gallery-item" onclick="openGalleryPopup(${i})" style="animation: fadeInUp 0.6s ease ${i*0.1}s both;">
                     ${getArtHTML(item.type)}
                     <div class="gallery-overlay">
                         <div class="click-icon">🔍</div>
