@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Quiz ❓</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;600;700&family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a0a2e 0%, #4a1942 25%, #893168 50%, #c44569 75%, #f8b500 100%);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            overflow-x: hidden;
+            font-family: 'Hind Siliguri', 'Poppins', sans-serif;
+            position: relative; color: white;
+        }
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .hearts-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: hidden; z-index: 1; }
+        .heart { position: absolute; color: rgba(255,255,255,0.25); font-size: 20px; animation: floatUp linear infinite; bottom: -50px; }
+        @keyframes floatUp { 0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.8; } 100% { transform: translateY(-100vh) rotate(360deg) scale(0.5); opacity: 0; } }
+        .sparkle { position: absolute; width: 4px; height: 4px; background: white; border-radius: 50%; animation: sparkle 3s ease-in-out infinite; }
+        @keyframes sparkle { 0%, 100% { opacity: 0; transform: scale(0); } 50% { opacity: 1; transform: scale(1); } }
+        .navbar { position: fixed; top: 0; left: 0; width: 100%; z-index: 200; background: rgba(0,0,0,0.25); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 0 20px; }
+        .nav-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+        .nav-logo { font-family: 'Great Vibes', cursive; font-size: 1.8rem; color: #fff; text-shadow: 0 0 15px rgba(255,105,180,0.8); text-decoration: none; }
+        .nav-links { display: flex; gap: 6px; flex-wrap: wrap; }
+        .nav-link { padding: 7px 14px; border: none; background: transparent; color: rgba(255,255,255,0.7); font-family: 'Poppins', sans-serif; font-size: 0.82rem; cursor: pointer; border-radius: 20px; transition: all 0.3s ease; text-decoration: none; }
+        .nav-link:hover { background: rgba(255,255,255,0.15); color: white; }
+        .nav-link.active { background: rgba(255,105,180,0.4); color: white; font-weight: 600; }
+        .lang-toggle { position: fixed; top: 75px; right: 20px; z-index: 100; background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border-radius: 30px; padding: 5px; display: flex; gap: 5px; border: 1px solid rgba(255,255,255,0.2); }
+        .lang-btn { padding: 6px 16px; border: none; background: transparent; color: white; font-family: 'Poppins', sans-serif; font-size: 13px; cursor: pointer; border-radius: 25px; transition: all 0.3s ease; }
+        .lang-btn.active { background: rgba(255,255,255,0.3); font-weight: 600; }
+        .lang-btn:hover { background: rgba(255,255,255,0.2); }
+        .page-header { text-align: center; padding: 100px 20px 20px; position: relative; z-index: 10; }
+        .page-header h2 { font-family: 'Great Vibes', cursive; font-size: 3rem; text-shadow: 0 0 20px rgba(255,105,180,0.6); margin-bottom: 10px; }
+        .page-header p { color: rgba(255,255,255,0.7); font-size: 1rem; }
+        .quiz-container { max-width: 700px; margin: 0 auto; padding: 20px 20px 60px; position: relative; z-index: 10; }
+        .quiz-card {
+            background: rgba(255,255,255,0.08); backdrop-filter: blur(15px);
+            border-radius: 25px; padding: 40px; border: 1px solid rgba(255,255,255,0.15);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2); text-align: center;
+        }
+        .quiz-emoji { font-size: 4rem; margin-bottom: 20px; animation: bounce 1.5s ease infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        .quiz-question { font-size: 1.3rem; line-height: 1.8; margin-bottom: 30px; color: rgba(255,255,255,0.95); }
+        .quiz-options { display: flex; flex-direction: column; gap: 12px; }
+        .quiz-option {
+            background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 15px; padding: 18px 25px; color: white; font-size: 1.05rem;
+            cursor: pointer; transition: all 0.3s ease; text-align: left;
+            font-family: 'Hind Siliguri', 'Poppins', sans-serif;
+        }
+        .quiz-option:hover { background: rgba(255,107,157,0.3); border-color: rgba(255,107,157,0.5); transform: translateX(10px); }
+        .quiz-option.correct { background: rgba(46,213,115,0.3); border-color: #2ed573; }
+        .quiz-option.wrong { background: rgba(255,71,87,0.3); border-color: #ff4757; }
+        .quiz-progress { display: flex; justify-content: center; gap: 8px; margin-bottom: 30px; }
+        .quiz-dot { width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.2); transition: all 0.3s ease; }
+        .quiz-dot.active { background: #ff6b9d; box-shadow: 0 0 10px rgba(255,107,157,0.5); }
+        .quiz-dot.correct { background: #2ed573; }
+        .quiz-dot.wrong { background: #ff4757; }
+        .quiz-result {
+            display: none; text-align: center;
+        }
+        .quiz-result.show { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        .result-emoji { font-size: 5rem; margin-bottom: 20px; }
+        .result-title { font-family: 'Great Vibes', cursive; font-size: 2.5rem; margin-bottom: 15px; }
+        .result-text { font-size: 1.1rem; line-height: 1.8; color: rgba(255,255,255,0.9); margin-bottom: 25px; }
+        .result-score { font-size: 3rem; font-weight: 700; color: #ff6b9d; text-shadow: 0 0 20px rgba(255,107,157,0.5); margin-bottom: 10px; }
+        .result-hearts { font-size: 2rem; margin-bottom: 25px; animation: heartbeat 1s ease-in-out infinite; }
+        @keyframes heartbeat { 0%, 100% { transform: scale(1); } 10% { transform: scale(1.1); } 20% { transform: scale(1); } 30% { transform: scale(1.1); } 40% { transform: scale(1); } }
+        .restart-btn {
+            background: linear-gradient(135deg, #ff6b9d, #c44569); border: none;
+            color: white; padding: 15px 40px; border-radius: 30px;
+            font-family: 'Poppins', sans-serif; font-size: 1.1rem; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(196,69,105,0.4);
+        }
+        .restart-btn:hover { transform: scale(1.05); box-shadow: 0 15px 40px rgba(196,69,105,0.6); }
+        .floating-emoji { position: fixed; font-size: 24px; pointer-events: none; z-index: 5; animation: floatEmoji 10s ease-in-out infinite; }
+        @keyframes floatEmoji { 0%, 100% { transform: translate(0,0) rotate(0deg); } 25% { transform: translate(20px,-30px) rotate(10deg); } 50% { transform: translate(-10px,-50px) rotate(-5deg); } 75% { transform: translate(15px,-20px) rotate(5deg); } }
+        .hidden { display: none !important; }
+        @media (max-width: 768px) { .nav-link { padding: 5px 10px; font-size: 0.7rem; } .page-header h2 { font-size: 2.2rem; } .quiz-card { padding: 25px 20px; } .quiz-question { font-size: 1.1rem; } .result-title { font-size: 2rem; } }
+    </style>
+</head>
+<body>
+    <div class="hearts-container" id="heartsContainer"></div>
+    <nav class="navbar">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">💕 Love World</a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">🏠 Home</a>
+                <a href="messages.html" class="nav-link" target="_blank">💌 Messages</a>
+                <a href="gallery.html" class="nav-link" target="_blank">🖼️ Gallery</a>
+                <a href="letter.html" class="nav-link" target="_blank">💌 Letter</a>
+                <a href="countdown.html" class="nav-link" target="_blank">⏳ Countdown</a>
+                <a href="quiz.html" class="nav-link active">❓ Quiz</a>
+            </div>
+        </div>
+    </nav>
+    <div class="lang-toggle">
+        <button class="lang-btn active" onclick="setLang('bn')">বাংলা</button>
+        <button class="lang-btn" onclick="setLang('en')">English</button>
+    </div>
+    <div class="floating-emoji" style="top: 15%; left: 10%;">🌹</div>
+    <div class="floating-emoji" style="top: 25%; right: 15%; animation-delay: 2s;">💕</div>
+    <div class="floating-emoji" style="bottom: 20%; left: 20%; animation-delay: 4s;">💖</div>
+    <div class="floating-emoji" style="bottom: 30%; right: 10%; animation-delay: 6s;">🌸</div>
+    <div class="floating-emoji" style="top: 60%; left: 5%; animation-delay: 3s;">✨</div>
+    <div class="floating-emoji" style="top: 40%; right: 5%; animation-delay: 5s;">💫</div>
+
+    <div class="page-header">
+        <h2>How Well Do You Know Me?</h2>
+        <p>A fun quiz about us ❓💕</p>
+    </div>
+    <div class="quiz-container">
+        <div class="quiz-card" id="quizCard">
+            <div class="quiz-emoji" id="quizEmoji">💕</div>
+            <div class="quiz-progress" id="quizProgress"></div>
+            <div class="quiz-question" id="quizQuestion">Loading...</div>
+            <div class="quiz-options" id="quizOptions"></div>
+        </div>
+        <div class="quiz-card quiz-result" id="quizResult">
+            <div class="result-emoji" id="resultEmoji">🎉</div>
+            <div class="result-title" id="resultTitle">Quiz Complete!</div>
+            <div class="result-score" id="resultScore">0/5</div>
+            <div class="result-hearts">💖💗💖💗💖</div>
+            <div class="result-text" id="resultText"></div>
+            <button class="restart-btn" onclick="restartQuiz()">Play Again 💕</button>
+        </div>
+    </div>
+
+    <script>
+        const quizData = {
+            bn: [
+                {
+                    emoji: "🎂",
+                    question: "আমার প্রিয় জন্মদিনের কেকের স্বাদ কোনটি?",
+                    options: ["চকোলেট", "ভ্যানিলা", "স্ট্রবেরি", "বutterscotch"],
+                    correct: 0
+                },
+                {
+                    emoji: "🎬",
+                    question: "আমার প্রিয় মুভির ধরন কোনটি?",
+                    options: ["রোমান্টিক", "অ্যাকশন", "হরর", "কমেডি"],
+                    correct: 0
+                },
+                {
+                    emoji: "🍕",
+                    question: "আমার প্রিয় খাবার কোনটি?",
+                    options: ["বিরিয়ানি", "পিজ্জা", "বার্গার", "পাস্তা"],
+                    correct: 0
+                },
+                {
+                    emoji: "🎵",
+                    question: "আমার প্রিয় গানের ধরন কোনটি?",
+                    options: ["সফট রোমান্টিক", "রক", "পপ", "ক্লাসিক্যাল"],
+                    correct: 0
+                },
+                {
+                    emoji: "🌅",
+                    question: "আমি সূর্যোদয় নাকি সূর্যাস্ত পছন্দ করি?",
+                    options: ["সূর্যোদয়", "সূর্যাস্ত", "দুটোই", "কোনোটাই না"],
+                    correct: 1
+                }
+            ],
+            en: [
+                {
+                    emoji: "🎂",
+                    question: "What is my favorite birthday cake flavor?",
+                    options: ["Chocolate", "Vanilla", "Strawberry", "Butterscotch"],
+                    correct: 0
+                },
+                {
+                    emoji: "🎬",
+                    question: "What is my favorite movie genre?",
+                    options: ["Romantic", "Action", "Horror", "Comedy"],
+                    correct: 0
+                },
+                {
+                    emoji: "🍕",
+                    question: "What is my favorite food?",
+                    options: ["Biryani", "Pizza", "Burger", "Pasta"],
+                    correct: 0
+                },
+                {
+                    emoji: "🎵",
+                    question: "What is my favorite music genre?",
+                    options: ["Soft Romantic", "Rock", "Pop", "Classical"],
+                    correct: 0
+                },
+                {
+                    emoji: "🌅",
+                    question: "Do I prefer sunrise or sunset?",
+                    options: ["Sunrise", "Sunset", "Both", "Neither"],
+                    correct: 1
+                }
+            ]
+        };
+
+        const resultTexts = {
+            bn: {
+                perfect: "তুমি আমাকে পুরোপুরি চিনো! তুমি আমার সত্যিকারের ভালোবাসা! 💕",
+                good: "ভালো করেছো! তুমি আমাকে বেশ ভালোভাবেই চেনো! 💖",
+                okay: "আরেকটু চেষ্টা করো! তবে তুমি তোমার মতোই সুন্দর! 💗",
+                low: "কোনো ব্যাপার না! ভালোবাসা মানে সব জানা নয়, ভালোবাসা মানে বোঝা! 💝"
+            },
+            en: {
+                perfect: "You know me completely! You are my true love! 💕",
+                good: "Well done! You know me pretty well! 💖",
+                okay: "Try a bit more! But you are beautiful just the way you are! 💗",
+                low: "No worries! Love is not about knowing everything, love is about understanding! 💝"
+            }
+        };
+
+        let currentLang = 'bn';
+        let currentQuestion = 0;
+        let score = 0;
+        let answered = false;
+
+        function createHearts() {
+            const container = document.getElementById('heartsContainer');
+            const heartSymbols = ['❤️','💕','💖','💗','💓','💝','💘','💞'];
+            for (let i = 0; i < 25; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDuration = (Math.random() * 10 + 8) + 's';
+                heart.style.animationDelay = Math.random() * 10 + 's';
+                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                container.appendChild(heart);
+            }
+        }
+        function createSparkles() {
+            const container = document.getElementById('heartsContainer');
+            for (let i = 0; i < 40; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.animationDelay = Math.random() * 3 + 's';
+                sparkle.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                container.appendChild(sparkle);
+            }
+        }
+        function setLang(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            restartQuiz();
+        }
+        function renderProgress() {
+            const total = quizData[currentLang].length;
+            let html = '';
+            for (let i = 0; i < total; i++) {
+                let cls = 'quiz-dot';
+                if (i < currentQuestion) cls += ' correct';
+                else if (i === currentQuestion) cls += ' active';
+                html += `<div class="${cls}"></div>`;
+            }
+            document.getElementById('quizProgress').innerHTML = html;
+        }
+        function renderQuestion() {
+            answered = false;
+            const q = quizData[currentLang][currentQuestion];
+            document.getElementById('quizEmoji').textContent = q.emoji;
+            document.getElementById('quizQuestion').textContent = q.question;
+            const optsDiv = document.getElementById('quizOptions');
+            optsDiv.innerHTML = '';
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('div');
+                btn.className = 'quiz-option';
+                btn.textContent = opt;
+                btn.onclick = () => selectAnswer(idx);
+                optsDiv.appendChild(btn);
+            });
+            renderProgress();
+        }
+        function selectAnswer(idx) {
+            if (answered) return;
+            answered = true;
+            const q = quizData[currentLang][currentQuestion];
+            const opts = document.querySelectorAll('.quiz-option');
+            opts[idx].classList.add(idx === q.correct ? 'correct' : 'wrong');
+            if (idx === q.correct) score++;
+            else opts[q.correct].classList.add('correct');
+            setTimeout(() => {
+                currentQuestion++;
+                if (currentQuestion < quizData[currentLang].length) {
+                    renderQuestion();
+                } else {
+                    showResult();
+                }
+            }, 1500);
+        }
+        function showResult() {
+            document.getElementById('quizCard').style.display = 'none';
+            const resultDiv = document.getElementById('quizResult');
+            resultDiv.classList.add('show');
+            const total = quizData[currentLang].length;
+            document.getElementById('resultScore').textContent = score + '/' + total;
+            const texts = resultTexts[currentLang];
+            let text = texts.low;
+            let emoji = "😅";
+            if (score === total) { text = texts.perfect; emoji = "🎉"; }
+            else if (score >= total * 0.6) { text = texts.good; emoji = "😊"; }
+            else if (score >= total * 0.4) { text = texts.okay; emoji = "🙂"; }
+            document.getElementById('resultEmoji').textContent = emoji;
+            document.getElementById('resultText').textContent = text;
+        }
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            answered = false;
+            document.getElementById('quizCard').style.display = 'block';
+            document.getElementById('quizResult').classList.remove('show');
+            renderQuestion();
+        }
+        createHearts();
+        createSparkles();
+        renderQuestion();
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            document.body.style.backgroundPosition = `${x*50}% ${y*50}%`;
+        });
+    </script>
+</body>
+</html>
