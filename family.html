@@ -94,7 +94,26 @@
         .family-card .fam-icon { font-size: 2.5rem; margin-bottom: 10px; }
         .family-card .fam-name { font-family: 'Great Vibes', cursive; font-size: 1.8rem; color: #ffb3d1; margin-bottom: 5px; }
         .family-card .fam-relation { font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-bottom: 5px; }
-        .family-card .fam-date { font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-bottom: 10px; }
+        .family-card .fam-date { 
+            font-size: 1.05rem; 
+            color: #ffd700; 
+            margin-bottom: 6px; 
+            font-weight: 600;
+            text-shadow: 0 0 10px rgba(255,215,0,0.3);
+            letter-spacing: 0.5px;
+        }
+        .family-card .fam-next-bday { 
+            font-size: 0.85rem; 
+            color: #ffb3d1; 
+            margin-bottom: 12px; 
+            font-weight: 500;
+            background: rgba(255,255,255,0.08);
+            padding: 6px 14px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        .family-card .fam-next-bday .bday-label { color: rgba(255,255,255,0.6); font-size: 0.75rem; }
+        .family-card .fam-next-bday .bday-date { color: #ffb3d1; font-weight: 600; }
         .family-card .fam-age { font-size: 1.3rem; font-weight: 700; color: #f8b500; margin-bottom: 15px; text-shadow: 0 0 10px rgba(248,181,0,0.4); }
         .countdown-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 15px; }
         .count-box {
@@ -132,7 +151,6 @@
             .stats-grid { gap: 15px; }
         }
     </style>
-<base target="_blank">
 </head>
 <body>
     <div class="hearts-container" id="heartsContainer"></div>
@@ -396,7 +414,7 @@
             const grid = document.getElementById('familyGrid');
             const t = texts[currentLang];
             if (familyMembers.length === 0) {
-                grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;">' + t.empty + '</div>';
+                grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;text-align:center;">' + t.empty + '</div>';
                 return;
             }
             grid.innerHTML = familyMembers.map(m => {
@@ -405,14 +423,29 @@
                 const cd = getCountdownParts(nextBday);
                 const relLabel = t.relations[m.relation] || m.relation;
                 const dateStr = new Date(m.birthday).toLocaleDateString(currentLang === 'bn' ? 'bn-BD' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                const nextDateStr = nextBday.toLocaleDateString(currentLang === 'bn' ? 'bn-BD' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                const bdayLabel = currentLang === 'bn' ? 'পরবর্তী জন্মদিন' : 'Next Birthday';
                 return `
                 <div class="family-card" id="card-${m.id}">
                     <div class="saved-badge" id="badge-${m.id}">${t.saved}</div>
                     <div class="fam-icon">${getRelationIcon(m.relation)}</div>
                     <div class="fam-name">${m.name}</div>
                     <div class="fam-relation">${relLabel}</div>
-                    <div class="fam-date">${dateStr}</div>
+                    <div class="fam-date">🎂 ${dateStr}</div>
+                    <div class="fam-next-bday"><span class="bday-label">${bdayLabel}:</span> <span class="bday-date">${nextDateStr}</span></div>
                     <div class="fam-age">${t.age}: ${age}</div>
+                    <div class="days-left-badge" style="
+                        background: linear-gradient(135deg, rgba(255,107,157,0.4), rgba(196,69,105,0.4));
+                        border: 1px solid rgba(255,255,255,0.25);
+                        border-radius: 25px;
+                        padding: 8px 18px;
+                        margin-bottom: 12px;
+                        display: inline-block;
+                        font-size: 0.9rem;
+                        font-weight: 600;
+                        color: #fff;
+                        text-shadow: 0 0 10px rgba(255,107,157,0.5);
+                    ">${cd.days} ${currentLang === 'bn' ? 'দিন বাকি' : 'days left'}</div>
                     <div class="countdown-row">
                         <div class="count-box"><div class="count-num">${String(cd.days).padStart(2,'0')}</div><div class="count-unit">${t.days}</div></div>
                         <div class="count-box"><div class="count-num">${String(cd.hours).padStart(2,'0')}</div><div class="count-unit">${t.hours}</div></div>
